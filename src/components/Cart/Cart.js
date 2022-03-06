@@ -29,6 +29,16 @@ const Cart = props => {
 			{hasItems && <button className={classes.button} onClick={orderHandler} >Order</button>}
 		</div>
 
+	const submitOrderHandler = (userData) => {
+		fetch('https://react-food-app-f788b-default-rtdb.asia-southeast1.firebasedatabase.app/orders.json', {
+			method: 'POST',
+			body: JSON.stringify({
+				user: userData,
+				orderedItems: cartCtx.items
+			})
+		})
+	}
+
 	const cartItems = <ul className={classes.cartItems}>
 	{cartCtx.items.map((item) => 
 		<CartItem 	key={item.id} 
@@ -45,7 +55,7 @@ const Cart = props => {
 			<span>Total Amount</span>
 			<span>{totalAmount}</span>
 		</div>
-		{isCheckout && <Checkout onCancel={props.onClose} />}
+		{isCheckout && <Checkout onSubmit={submitOrderHandler} onCancel={props.onClose} />}
 		{!isCheckout && modalAction}
 	</Modal>
 	
